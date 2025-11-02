@@ -173,10 +173,31 @@ export default function AtomsClicker() {
                   <Avatar alt={ 'https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/square_1280_a97ab4575575732af91a0f61e47c9223.jpg'} src={"https://icdn.lenta.ru/images/2024/09/01/19/20240901195325800/square_1280_a97ab4575575732af91a0f61e47c9223.jpg"} sx={{ width: 50, height: 50 }} />
                 </Badge>
                 <Box sx={{ ml: 1, flex: 1 }}>
-                  <ListItemText
-                    primary={<Typography sx={{ color: "#eee", fontSize: "15px" }}>{other?.fullName}</Typography>}
-                    secondary={<Typography sx={{ color: "#777", fontSize: "0.70rem", ml: 1 }}>{chat.lastMessage?.content || "Нет сообщений"}</Typography>}
-                  />
+                 <ListItemText
+  primary={
+    <Typography sx={{ color: "#eee", fontSize: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+      {other?.fullName}
+    </Typography>
+  }
+  secondary={
+    <Typography
+      sx={{
+        color: "#777",
+        fontSize: "0.70rem",
+        ml: 1,
+        wordBreak: "break-word",
+        whiteSpace: "normal",
+      }}
+    >
+      {chat.lastMessage?.content
+        ? chat.lastMessage.content.length > 20
+          ? chat.lastMessage.content.slice(0, 20) + "…"
+          : chat.lastMessage.content
+        : "Нет сообщений"}
+    </Typography>
+  }
+/>
+
                 </Box>
               </ListItem>
               <Divider sx={{ borderColor: "#1f1f1f" }} />
@@ -269,7 +290,17 @@ export default function AtomsClicker() {
                     borderRadius: isMine ? '15px 15px 0 15px' : '15px 15px 15px 0',
                     position: 'relative'
                   }}>
-                    <Typography sx={{ fontSize: "15px", fontSize:"20px",fontFamily:'sf' }}>{msg.content}</Typography>
+                    <Typography
+  sx={{
+    fontSize: "20px",
+    fontFamily: "sf",
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-word",
+  }}
+>
+  {msg.content}
+</Typography>
+
                     
                   </Box>
                   <Typography sx={{ fontSize: "0.7rem", color: "#ccc", mt: 0.5, textAlign: isMine ? "right" : "left" }}>{messageDate}</Typography>
