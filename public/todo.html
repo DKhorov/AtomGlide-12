@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUPER TODO — Короткая версия</title>
+<style>
+body{background:#0f1724;color:#fff;font-family:sans-serif;margin:0;padding:20px}
+.container{max-width:600px;margin:auto}
+.controls{display:flex;gap:8px;margin-bottom:10px}
+.controls input{flex:1;padding:10px;border:none;border-radius:6px}
+.controls button{padding:10px 14px;border:none;border-radius:6px;background:#6ee7b7;color:#062024;font-weight:600;cursor:pointer}
+.task{background:#1a2740;padding:10px;margin:8px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+.stage{cursor:pointer;padding:4px 8px;background:#223355;border-radius:4px;font-size:12px}
+.subtasks{margin-top:6px;padding-left:20px}
+button.small{background:#2c3e60;color:#eee;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>AtomGlide todo</h2>
+<div class="controls">
+<input id="taskInput" type="text" placeholder="Новая задача...">
+<button id="add">Добавить</button>
+</div>
+<div id="list"></div>
+</div>
+<script>
+const list=document.getElementById('list');
+const input=document.getElementById('taskInput');
+const add=document.getElementById('add');
+const stages=['Quarter','Semi','Final','Grand Final'];
+let data=JSON.parse(localStorage.getItem('todoData')||'[]');
+
+function save(){localStorage.setItem('todoData',JSON.stringify(data));}
+function render(){
+ list.innerHTML='';
+ data.forEach((t,i)=>{
+  const div=document.createElement('div');div.className='task';
+  const title=document.createElement('div');title.textContent=t.title;title.contentEditable=true;
+  title.onblur=()=>{t.title=title.textContent;save();};
+  const stage=document.createElement('div');stage.className='stage';stage.textContent=t.stage||'Quarter';
+  stage.onclick=()=>{let idx=stages.indexOf(t.stage||'Quarter');t.stage=stages[(idx+1)%stages.length];save();render();};
+  const del=document.createElement('button');del.textContent='×';del.className='small';del.onclick=()=>{data.splice(i,1);save();render();};
+  div.appendChild(title);div.appendChild(stage);div.appendChild(del);
+  // subtasks
+  if(t.subtasks&&t.subtasks.length){
+    const subs=document.createElement('div');subs.className='subtasks';
+    t.subtasks.forEach((s,j)=>{
+      const st=document.createElement('div');st.textContent='• '+s.title;subs.appendChild(st);
+    });div.appendChild(subs);
+  }
+  const addSub=document.createElement('button');addSub.textContent='+ подзадача';addSub.className='small';
+  addSub.onclick=()=>{let stitle=prompt('Название подзадачи');if(stitle){t.subtasks=t.subtasks||[];t.subtasks.push({title:stitle});save();render();}};
+  div.appendChild(addSub);
+  list.appendChild(div);
+ });
+}
+
+function addTask(){let v=input.value.trim();if(!v)return;data.push({title:v,stage:'Quarter',subtasks:[]});input.value='';save();render();}
+add.onclick=addTask;input.onkeydown=e=>{if(e.key==='Enter')addTask();}
+render();
+</script>
+</body>
+</html>
