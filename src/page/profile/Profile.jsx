@@ -140,7 +140,7 @@ useEffect(() => {
       
       const [profileData, postsRes, purchasesRes] = await Promise.all([
         userService.getUserById(id),
-        axios.get(`https://atomglidedev.ru/api/posts/user/${id}`)
+        axios.get(`https://atomglidedev.ru/api/posts/user/${id}`),
 axios.get(`https://atomglidedev.ru/api/${id}/purchases`)
 
       ]);
