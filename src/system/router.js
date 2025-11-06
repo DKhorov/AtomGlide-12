@@ -284,7 +284,9 @@ const AppRouter = () => {
                   <Route path="/wallet" element={<div style={{ display: 'flex' }}><Wallet />{!isMobile && <WidgetMain />}</div>} />
                   <Route path="/account/:id" element={<div style={{ display: 'flex' }}><Profile /></div>} />
                   <Route path="*" element={<div style={{ display: 'flex' }}><Main />{!isMobile && <WidgetMain />}</div>} />
-                  <Route path="/game" element={<GamePage />} />                              
+                  <Route path="/game" element={<GamePage />} />
+                <Route path="/account" element={<div style={{ display: 'flex' }}><Main /></div>} />
+
 
                 </>
               )}
