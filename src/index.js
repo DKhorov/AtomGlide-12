@@ -15,7 +15,8 @@ import { tips } from './system/data';
 import initPerformanceOptimizations from './system/performance';
 import { Provider } from 'react-redux';
 import store from './system/redux/store';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async'; // ✅ добавлено
 
 const EpicLoader = () => {
   const { loading, initialLoading } = useLoading();
@@ -51,36 +52,38 @@ const theme = createNormalizedTheme(createTheme());
 const token = localStorage.getItem("token");
 const isAuth = Boolean(token);
 
-
 const RootApp = () => {
   const [showModal, setShowModal] = useState(true);
 
   return (
-    <Provider store={store}>
-      <LoadingProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ErrorBoundary>
-            <EpicLoaderInit>
-              <EpicLoader />
-              {isAuth ? (<>
-                <App />
-                              {showModal && <Moda onClose={() => setShowModal(false)} />}
-</>
-              ) : (
-                <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/registration" element={<RegistrationPage />} />
-                  </Routes>
-                </BrowserRouter>
-              )}
-            </EpicLoaderInit>
-          </ErrorBoundary>
-        </ThemeProvider>
-      </LoadingProvider>
-    </Provider>
+    <HelmetProvider> {/* ✅ обертка добавлена */}
+      <Provider store={store}>
+        <LoadingProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ErrorBoundary>
+              <EpicLoaderInit>
+                <EpicLoader />
+                {isAuth ? (
+                  <>
+                    <App />
+                    {showModal && <Moda onClose={() => setShowModal(false)} />}
+                  </>
+                ) : (
+                  <BrowserRouter>
+                    <Routes>
+                      <Route path="/" element={<Login />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/registration" element={<RegistrationPage />} />
+                    </Routes>
+                  </BrowserRouter>
+                )}
+              </EpicLoaderInit>
+            </ErrorBoundary>
+          </ThemeProvider>
+        </LoadingProvider>
+      </Provider>
+    </HelmetProvider>
   );
 };
 

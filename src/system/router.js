@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { Box, useMediaQuery, CircularProgress } from '@mui/material';
+import { Box, useMediaQuery, CircularProgress ,Fade } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../system/redux/slices/getme';
 import { useUser } from '../components/UserProvider';
@@ -26,6 +26,7 @@ const NotFound = React.lazy(() => import('../page/profile/NotFound'));
 const CommentsStreamPage = React.lazy(() => import('../page/comments-stream'));
 import Moda from '../page/apps/mod.jsx';
 import axios from "./axios.js";
+import FullPost from '../page/main/post/FullPost.jsx';
 
 const GamePage = () => {
   const [user, setUser] = useState(null);
@@ -182,16 +183,90 @@ const GamePage = () => {
 };
 
 
-const LoadingFallback = () => (
-  <Box sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    color: 'white'
-  }}>
-<span class="loader"></span>  </Box>
-);
+const LoadingFallback = () => {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    // Эффект плавного скрытия через 1.5 секунды (или когда загрузка завершена)
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 1500); // можешь изменить время на 2000 (2 сек), если хочешь чуть дольше
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <Fade in={visible} timeout={800}>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "#000",
+          color: "#fff",
+          zIndex: 9999,
+          p: 4,
+        }}
+      >
+        {/* Центрированный логотип */}
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            animation: "fadeIn 1.5s ease-in-out",
+            "@keyframes fadeIn": {
+              from: { opacity: 0, transform: "scale(0.9)" },
+              to: { opacity: 1, transform: "scale(1)" },
+            },
+          }}
+        >
+          <img
+            src="/1.png"
+            alt="AtomGlide Logo"
+            style={{
+              width: "120px",
+              height: "120px",
+              objectFit: "contain",
+              userSelect: "none",
+            }}
+          />
+        </Box>
+
+        {/* Текст внизу */}
+        <Box
+          sx={{
+            textAlign: "center",
+            fontFamily:
+              '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            fontSize: "25px",
+            fontWeight: 700,
+            letterSpacing: "0.5px",
+            opacity: 0.7,
+            pb: 2,
+            animation: "textFade 1.5s ease-in-out",
+            "@keyframes textFade": {
+              from: { opacity: 0, transform: "translateY(10px)" },
+              to: { opacity: 0.7, transform: "translateY(0)" },
+            },
+          }}
+        >
+          AtomGlide
+        </Box>
+      </Box>
+    </Fade>
+  );
+};
+
+
+
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -205,7 +280,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <Box sx={{ color: 'red', padding: 4 }}>Ошибка загрузки компонента</Box>;
+      return <Box sx={{ color: 'red', padding: 4 }}>Ошибка загрузки </Box>;
     }
     return this.props.children;
   }
@@ -284,9 +359,9 @@ const AppRouter = () => {
                   <Route path="/wallet" element={<div style={{ display: 'flex' }}><Wallet />{!isMobile && <WidgetMain />}</div>} />
                   <Route path="/account/:id" element={<div style={{ display: 'flex' }}><Profile /></div>} />
                   <Route path="*" element={<div style={{ display: 'flex' }}><Main />{!isMobile && <WidgetMain />}</div>} />
-                  <Route path="/game" element={<GamePage />} />
-                <Route path="/account" element={<div style={{ display: 'flex' }}><Main /></div>} />
+                  <Route path="/game" element={<GamePage />} />                              
 
+<Route path="/post/:id" element={<div style={{ display: 'flex' }}><FullPost />{!isMobile && <WidgetMain />}</div>} />
 
                 </>
               )}
