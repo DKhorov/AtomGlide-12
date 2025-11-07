@@ -67,7 +67,6 @@ const RootApp = () => {
                 {isAuth ? (
                   <>
                     <App />
-                    {showModal && <Moda onClose={() => setShowModal(false)} />}
                   </>
                 ) : (
                   <BrowserRouter>
