@@ -150,12 +150,17 @@ useEffect(() => {
 let pinnedNftsData = [];
 if (Array.isArray(userData.pinnedNfts) && userData.pinnedNfts.length > 0) {
   pinnedNftsData = await Promise.all(
-    userData.pinnedNfts.map(id => 
-      axios.get(`/nft/${id}`).then(res => res.data).catch(() => null)
+    userData.pinnedNfts.map(nft =>
+      axios
+        .get(`/nft/${nft._id || nft}`) // ✅ проверяем — объект или строка
+        .then(res => res.data)
+        .catch(() => null)
     )
   );
+
   pinnedNftsData = pinnedNftsData.filter(nft => nft !== null);
 }
+
 
 
       setState(prev => ({
@@ -360,7 +365,7 @@ if (Array.isArray(userData.pinnedNfts) && userData.pinnedNfts.length > 0) {
         maxWidth: isMobile ? '100vw' : '700px',
         width: isMobile ? '100vw' : '700px',
         minWidth: isMobile ? '0' : '200px',
-        height: isMobile ? 'calc(100vh - 60px)' : '100vh',
+        height:  '100vh',
         flex: 1,
         overflowY: 'auto',
         scrollbarWidth: 'none',
@@ -476,23 +481,7 @@ if (Array.isArray(userData.pinnedNfts) && userData.pinnedNfts.length > 0) {
 <Box sx={{ height: 90 }} />
 
 
-{state.pinnedNfts.length > 0 && (
-  <Box sx={{ mt: 1, mb: 1, display: 'flex', justifyContent: 'center', gap: 1 }}>
-    {state.pinnedNfts.slice(0, 5).map((nft) => (
-      <Box 
-        key={nft._id} 
-        sx={{ cursor: 'pointer' }} 
-        onClick={() => setSelectedNft(nft)}
-      >
-        <img 
-          src={nft.imageUrl || nft.image || 'https://via.placeholder.com/50'} 
-          alt={nft.title || nft.name || 'NFT'} 
-          style={{ width: 50, height: 50, borderRadius: 8 }} 
-        />
-      </Box>
-    ))}
-  </Box>
-)}
+
 
 
       <Box
@@ -533,6 +522,33 @@ if (Array.isArray(userData.pinnedNfts) && userData.pinnedNfts.length > 0) {
       )}
 
       <Box sx={{ px: isMobile ? 2 : 0, mt: 2 , backgroundColor:'rgba(37, 37, 37, 1)' , pt:2.3,borderRadius:"20px",pb:2,pr:2,pl:2}}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography sx={{ fontWeight: 'Bold', paddingLeft: '20px', marginBottom: 0, paddingBottom: 0 ,color:'rgba(196, 196, 196, 1)'}}>Закрепленные  NFT</Typography>
+          <Tooltip title={copied.username ? 'Скопировано!' : 'Скопировать'}>
+            <IconButton size="small" onClick={() => handleCopy('username', username)}>
+              
+            </IconButton>
+          </Tooltip>
+        </Box>
+         {state.pinnedNfts.length > 0 && (
+  <Box sx={{ mt: 1, mb: 1, display: 'flex', gap: 1 }}>
+    {state.pinnedNfts.slice(0, 5).map((nft) => (
+      <Box 
+        key={nft._id} 
+        sx={{ cursor: 'pointer' }} 
+        onClick={() => setSelectedNft(nft)}
+      >
+        <img 
+          src={nft.imageUrl || nft.image || 'https://via.placeholder.com/50'} 
+          alt={nft.title || nft.name || 'NFT'} 
+          style={{ width: 50, height: 50, borderRadius: 8, marginLeft:'15px'}} 
+        />
+      </Box>
+    ))}
+  </Box>
+)}
+        <Divider sx={{ my: 1.5 , bgcolor:'rgba(47, 47, 47, 1)' , pl:1,pr:1,borderRadius:'10px'}} />
+
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography sx={{ fontWeight: 'Bold', paddingLeft: '20px', marginBottom: 0, paddingBottom: 0 ,color:'rgba(196, 196, 196, 1)'}}>Юзернейм</Typography>
           <Tooltip title={copied.username ? 'Скопировано!' : 'Скопировать'}>
@@ -580,6 +596,7 @@ if (Array.isArray(userData.pinnedNfts) && userData.pinnedNfts.length > 0) {
     flexWrap: 'wrap',
   }}
 >
+
   <Typography
     sx={{
       fontWeight: 'bold',
