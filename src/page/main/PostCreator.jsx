@@ -138,9 +138,9 @@ const PostCreatorModal = ({ onPostCreated }) => {
           ml: isMobile ? 0 : 0,
           textTransform: "none",
           fontFamily: "sf",
-          fontWeight: 'bold',
+          fontWeight: '500',
           fontSize:'20px',
-          mb: 0,
+          mb: 1,
           mt: 1,
           borderRadius:'50px'
         }}

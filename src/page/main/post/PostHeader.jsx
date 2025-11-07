@@ -230,8 +230,8 @@ const formatTimeAgo = (dateString) => {
       variant="subtitle2"
       sx={{ 
         fontSize: '18px', 
-        fontWeight: 'bold', 
-        color: 'rgba(255, 255, 255, 1)', 
+        fontWeight: '500', 
+        color: 'rgba(236, 236, 236, 1)', 
         cursor: 'pointer',
         fontFamily:'sf',
       }}

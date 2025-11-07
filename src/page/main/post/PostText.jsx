@@ -8,15 +8,25 @@ import remarkGfm from 'remark-gfm';
 const PostText = ({ children, postId }) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
+
   const renderMarkdown = (content, key) => (
     <ReactMarkdown
       key={key}
       remarkPlugins={[remarkGfm]}
       components={{
         p: ({ node, ...props }) => (
-          <p style={{ margin: "0px 0", maxWidth: "780px", overflowWrap: "break-word", fontSize:'15px', fontFamily:'sf'}} {...props} />
+          <p
+            style={{
+              margin: "0px 0",
+              maxWidth: "780px",
+              overflowWrap: "break-word",
+              fontSize: '15px',
+              fontFamily: 'sf'
+            }}
+            {...props}
+          />
         ),
-        h1: ({ node, ...props }) => <h1 style={{ fontSize: "1.6em", margin: "15px 0", maxWidth: "480px",fontWeight:'bold' }} {...props} />,
+        h1: ({ node, ...props }) => <h1 style={{ fontSize: "1.6em", margin: "15px 0", maxWidth: "480px", fontWeight: 'bold' }} {...props} />,
         h2: ({ node, ...props }) => <h2 style={{ fontSize: "1.3em", margin: "13px 0", maxWidth: "480px" }} {...props} />,
         h3: ({ node, ...props }) => <h3 style={{ fontSize: "1.1em", margin: "11px 0", maxWidth: "480px" }} {...props} />,
         li: ({ node, ...props }) => <li style={{ marginLeft: "18px", maxWidth: "480px" }} {...props} />,
@@ -53,7 +63,7 @@ const PostText = ({ children, postId }) => {
       {content}
     </ReactMarkdown>
   );
-  
+
   const renderContent = (child, i) => {
     if (typeof child === "string") {
       return child.split(/(\[[^\]]+\])/).map((part, idx) => {
@@ -73,17 +83,26 @@ const PostText = ({ children, postId }) => {
     return child;
   };
 
-const fullText = React.Children.toArray(children).join(" ");
+  const fullText = React.Children.toArray(children).join(" ");
   const isLong = fullText.length > 1200;
+
+  // ✅ переход на полный пост
+  const handleNavigate = () => {
+    if (postId) navigate(`/post/${postId}`);
+  };
 
   return (
     <Box sx={{ position: "relative", maxWidth: "700px" }}>
       <Typography
+        onClick={handleNavigate}
         sx={{
           fontFamily: "Arial",
           marginTop: "0",
           color: "rgba(216, 215, 215, 1)",
-      ml:0,
+          ml: 0,
+          cursor: postId ? 'pointer' : 'default',
+          transition: '0.2s',
+          "&:hover": postId ? { color: "#4ea1ff" } : {},
           maxHeight: !expanded && isLong ? "150px" : "none",
           overflow: !expanded && isLong ? "hidden" : "visible",
           position: "relative",
@@ -112,7 +131,7 @@ const fullText = React.Children.toArray(children).join(" ");
             fontSize: "12px",
             color: "#4ea1ff",
             textTransform: "none",
-            mr:2
+            mr: 2,
           }}
         >
           {expanded ? "Скрыть" : "Показать ещё"}
