@@ -51,7 +51,7 @@ const PostText = ({ children, postId }) => {
           <img
             {...props}
             style={{
-              maxWidth: "480px",
+              maxWidth: "699px",
               borderRadius: "8px",
               display: "block",
               margin: "10px 0"
