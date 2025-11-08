@@ -26,9 +26,9 @@ const PostText = ({ children, postId }) => {
             {...props}
           />
         ),
-        h1: ({ node, ...props }) => <h1 style={{ fontSize: "1.6em", margin: "15px 0", maxWidth: "600px", fontWeight: 'bold' }} {...props} />,
-        h2: ({ node, ...props }) => <h2 style={{ fontSize: "1.3em", margin: "13px 0", maxWidth: "600px" }} {...props} />,
-        h3: ({ node, ...props }) => <h3 style={{ fontSize: "1.1em", margin: "11px 0", maxWidth: "600px" }} {...props} />,
+        h1: ({ node, ...props }) => <h1 style={{ fontSize: "1.6em", margin: "15px 0", maxWidth: "480px", fontWeight: 'bold' }} {...props} />,
+        h2: ({ node, ...props }) => <h2 style={{ fontSize: "1.3em", margin: "13px 0", maxWidth: "480px" }} {...props} />,
+        h3: ({ node, ...props }) => <h3 style={{ fontSize: "1.1em", margin: "11px 0", maxWidth: "480px" }} {...props} />,
         li: ({ node, ...props }) => <li style={{ marginLeft: "18px", maxWidth: "480px" }} {...props} />,
         code: ({ inline, children, ...props }) => (
           <code
@@ -51,7 +51,7 @@ const PostText = ({ children, postId }) => {
           <img
             {...props}
             style={{
-              maxWidth: "699px",
+              maxWidth: "480px",
               borderRadius: "8px",
               display: "block",
               margin: "10px 0"
