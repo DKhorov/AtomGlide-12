@@ -18,7 +18,7 @@ const PostText = ({ children, postId }) => {
           <p
             style={{
               margin: "0px 0",
-              maxWidth: "780px",
+              maxWidth: "300px",
               overflowWrap: "break-word",
               fontSize: '15px',
               fontFamily: 'sf'
@@ -92,7 +92,8 @@ const PostText = ({ children, postId }) => {
   };
 
   return (
-    <Box sx={{ position: "relative", maxWidth: "700px" }}>
+    <Box sx={{ position: "relative",               maxWidth: "300px",
+ }}>
       <Typography
         onClick={handleNavigate}
         sx={{
